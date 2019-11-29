@@ -918,4 +918,66 @@ ggplotでは変数（上の例では`g`）にグラフオブジェクトを格�
 
 3. `Species`の値が同じものを同じ色でプロットする.  
 
-としています. 次にどのようなプロットを行うかをしていするのがその次の`geom_point()`の部分になります. ggplotのは様々な`geom_XXX()`という関数が用意されていて目的に応じて様々なプロットを行うことができます. 次に`Species`ごとの`Sepal.Width`の分布を示す
+としています. 次にどのようなプロットを行うかをしていするのがその次の`geom_point()`の部分になります. ggplotのは様々な`geom_XXX()`という関数が用意されていて目的に応じて様々なプロットを行うことができます. 以下に代表的なものを紹介します.
+
+|関数名|グラフ|
+|:--:|:--:|
+|geom_point()|散布図|
+|geom_line()|折れ線グラフ|
+|geom_bar()|棒グラフ|
+|geom_hisgram()|ヒストグラム|
+|geom_boxplot()|箱ひげ図|
+|geom_violin()|バイオリンプロット|  
+
+次に`Species`ごとの`Sepal.Width`の分布を示す箱ひげ図を描いてみましょう.  
+
+```R
+g <- ggplot(df, aes(x = Species, y = Sepal.Width))+
+  geom_boxplot()
+
+plot(g)
+```
+
+![](./graph2.PNG) 
+
+バイオリンプロットに変えてみます. 
+
+```R
+g <- ggplot(df, aes(x = Species, y = Sepal.Width))+
+  geom_violin() #geom_boxplot() -> geom_violin()
+
+plot(g)
+```
+
+![](./graph3.PNG) 
+
+種ごとに色を変えたい場合は以下のようにすればよいです.  
+
+```R
+g <- ggplot(df, aes(x = Species, y = Sepal.Width, fill = Species))+ #color = Speciesをaes()に追加
+  geom_violin()+
+  guide(fill = F) #これがないと右に不必要な凡例が出てしまいます.
+
+plot(g)
+```
+![](./graph4.PNG) 
+
+最後に文字の大きさや軸ラベルの設定を行う例を紹介します.  
+
+```R
+g <- ggplot(df, aes(x = Species, y = Sepal.Width, fill = Species))+ #color = Speciesをaes()に追加
+  geom_violin()+
+  guide(fill = F)+ #これがないと右に不必要な凡例が出てしまいます.
+  ylab("GakunoHaba")+ #y軸のラベルを"GakunoHaba"に変更.
+  xlab("Syurui")+ #x軸のラベルを"Syurui"に変更.
+  theme(axis.title.y = element_text(size = 25))+ #y軸のラベルの文字の大きさを変更.
+  theme(axis.title.x = element_text(size = 25))+ #x軸のラベルの文字の大きさを変更.
+  theme(axis.text.y = element_text(size = 20))+ #y軸の目盛りの文字の大きさを変更.
+  theme(axis.text.x = element_text(size = 20)) #x軸の目盛りの文字の大きさを変更.
+
+plot(g)
+```
+![](./graph5.PNG) 
+
+## 練習問題
+`Species`ごとの`Sepal.Length`の分布をしめすヒストグラムを描いてください. ヒント: `Species`ごとに分けてグラフを描くためには`facet_wrap(~Species)`をグラフオブジェクトに足してください.
